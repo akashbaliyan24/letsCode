@@ -1,8 +1,14 @@
+# Node dependencies
 node_modules
-# Keep environment variables out of version control
+node_modules/.prisma
+node_modules/@prisma 
+
+# Environment variables
 .env
 
+# Prisma generated client/engines
 /src/generated/prisma
 
-/src/generated/prisma
-
+# OS / Editor / Logs
+.DS_Store
+*.log
