@@ -7,7 +7,7 @@ dotenv.config();
 const app = express();
 app.use(express.json())
 app.use(cookieParser())
-const port = process.env.PORT || 3500
+const port = process.env.PORT 
 
 app.get("/",(req,res)=>{
     res.send("hello guys welcome to leetlab🪄")
@@ -15,6 +15,7 @@ app.get("/",(req,res)=>{
 
 app.use("/api/v1/auth",authRoutes);
 app.use("/api/v1/problems",problemRoutes)
+app.use("api/v1/execute-code",executionRoute)
 app.listen(port,()=>{
     console.log(`Server is running on port ${port}`);
 })
