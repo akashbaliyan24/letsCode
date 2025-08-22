@@ -32,6 +32,7 @@ model User {
   problems      Problem[]
   submissions   Submission[]
   problemSolved problemSolved[]
+  playlists Playlist[]
 }
 
 enum Difficulty {
@@ -63,6 +64,7 @@ model Problem {
 
   submission Submission[]
   solvedBy   problemSolved[]
+  problemsPlaylists ProblemInPlaylist[]
 }
 
 model Submission {
@@ -117,4 +119,31 @@ model problemSolved {
   problem   Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
   @@unique([userId, problemId])
+}
+
+model Playlist{
+  id String @id @default(uuid())
+  name String @unique
+  description String?
+  userId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  problems ProblemInPlaylist[]
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([name, userId ])  // unique playlist name per user
+}
+
+model ProblemInPlaylist {
+  id String @id @default(uuid())
+  playListId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  problemId String
+
+  playlist Playlist @relation(fields: [playListId], references: [id], onDelete: Cascade)
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  
+  @@unique([playListId, problemId]) // unique problem in playlist
 }
