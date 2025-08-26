@@ -6,22 +6,32 @@ import LogoutButton from "./LogoutButton";
 
 
 
-const Navbar = ()=>{
+const Navbar = () => {
 
-    const {authUser} = useAuthStore()
+  const { authUser } = useAuthStore()
 
-    console.log("AUTH_USER",authUser)
+  console.log("AUTH_USER", authUser)
 
-    return (
-     <nav className="sticky top-0 z-50 w-full py-5">
+  return (
+    <nav className="sticky top-0 z-50 w-full py-5">
       <div className="flex w-full justify-between mx-auto max-w-4xl bg-black/15 shadow-lg shadow-neutral-600/5 backdrop-blur-lg border border-gray-200/10 p-4 rounded-2xl">
         {/* Logo Section */}
         <Link to="/" className="flex items-center gap-3 cursor-pointer">
-          <img src="/letsCode.png" className="h-18 w-18  text-primary bg-black/20 border-none px-2 py-2 rounded-full" />
-          <span className="text-lg md:text-2xl font-bold tracking-tight text-blue-950 hidden md:block">
-          Let'sCode 
+          {/* Logo wrapper with background */}
+          <div className="h-16 w-16 flex items-center justify-center rounded-full bg-amber-50">
+            <img
+              src="/letsCode.png"
+              alt="Let'sCode"
+              className="h-16 w-16 object-contain"
+            />
+          </div>
+
+          {/* Logo text */}
+          <span className="text-lg md:text-2xl font-bold tracking-tight text-white hidden md:block">
+            Let&apos;sCode
           </span>
         </Link>
+
 
         {/* User Profile and Dropdown */}
         <div className="flex items-center gap-8">
@@ -37,19 +47,19 @@ const Navbar = ()=>{
                   className="object-cover"
                 />
               </div>
-           
+
             </label>
             <ul
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 space-y-3"
             >
               {/* Admin Option */}
-             
+
 
               {/* Common Options */}
               <li>
                 <p className="text-base font-semibold">
-                 
+
                   {authUser?.name}
 
                 </p>
@@ -86,7 +96,7 @@ const Navbar = ()=>{
         </div>
       </div>
     </nav>
-    )
+  )
 }
 
 export default Navbar;
