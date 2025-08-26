@@ -28,7 +28,7 @@ const Navbar = () => {
 
           {/* Logo text */}
           <span className="text-lg md:text-2xl font-bold tracking-tight text-white hidden md:block">
-            Let&apos;sCode
+            Let'sCode
           </span>
         </Link>
 
