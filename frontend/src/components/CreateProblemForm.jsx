@@ -65,7 +65,7 @@ const problemSchema = z.object({
     }),
 });
 
-const sampleData = {
+const sampledpData = {
     title: "Climbing Stairs",
     category: "dp", // Dynamic Programming
     description:
@@ -561,6 +561,7 @@ const CreateProblemForm = () => {
     });
     const [isLoading, setIsLoading] = useState(false);
     const onsubmit = async (value) => {
+        
         try {
             setIsLoading(true)
             const res = await axiosInstance.post("/problems/create-problem", value)
@@ -577,7 +578,7 @@ const CreateProblemForm = () => {
     }
 
     const loadSampleData = () => {
-        const sampleData = sampleType === "DP" ? sampleData : sampleStringProblem
+        const sampleData = sampleType === "DP" ? sampledpData : sampleStringProblem
 
         replaceTags(sampleData.tags.map((tag) => tag));
         replaceTestCases(sampleData.testcases.map((tc) => tc));
@@ -758,7 +759,7 @@ const CreateProblemForm = () => {
                                                         </span>
                                                     </label>
                                                     <textarea className='textarea textarea-bordered min-h-24 w-full p-3 resize-y'
-                                                        {...register(`testcases.${index}?.output`)}
+                                                        {...register(`testcases.${index}.output`)}
                                                         placeholder='Enter expexted ouput here' />
                                                     {errors.testcases?.[index]?.output && (
                                                         <label className="label">
