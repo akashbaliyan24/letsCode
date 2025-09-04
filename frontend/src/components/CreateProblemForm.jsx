@@ -599,7 +599,7 @@ const CreateProblemForm = () => {
                         <div className="flex flex-col md:flex-row gap-3 mt-4 md:mt-0">
                             <div className="join flex">
                                 <button type='button' className={`btn join-item ${sampleType === "DP" ? "btn-active" : ""}`}
-                                    onClick={() => setSampleType("array")}
+                                    onClick={() => setSampleType("DP")}
                                 >
                                     DP Problem
                                 </button>
