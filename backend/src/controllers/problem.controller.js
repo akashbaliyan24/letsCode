@@ -64,7 +64,7 @@ export const getAllProblems = async (req, res) => {
                 include : {
                     solvedBy : {
                         where:{
-                            userId:req.user.id
+                            userId:req.user.id,
                         }
                     }
                 }
