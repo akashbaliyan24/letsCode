@@ -47,7 +47,7 @@ export const useProblemStore = create((set) => ({
 
     getSolvedProblemByUser: async () => {
         try {
-            const res = await axiosInstance.get("/problems/get-solved-probelem")
+            const res = await axiosInstance.get("/problems/get-solved-problems")
             set({ solvedProblems: res.data.problems })
         } catch (error) {
             console.log("Error in getting solved problems", Error)
