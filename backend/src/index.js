@@ -12,34 +12,32 @@ import playlistRoutes from "./routes/playlist.routes.js";
 dotenv.config();
 const app = express();
 
-// ✅ Allow multiple frontend URLs
+// ✅ Setup allowed origins for CORS
+// Fallback to localhost for development if FRONTEND_URLS not set
 const allowedOrigins = (process.env.FRONTEND_URLS || "http://localhost:5173").split(",");
 
-// ✅ CORS setup
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      // Allow requests with no origin (like Postman or curl)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error("Not allowed by CORS"));
+        callback(new Error(`CORS error: Origin ${origin} not allowed`));
       }
     },
-    credentials: true,
+    credentials: true, // Allow cookies to be sent
   })
 );
 
-// ✅ Preflight request handler
-app.use((req, res, next) => {
-  if (req.method === "OPTIONS") {
-    res.header("Access-Control-Allow-Origin", req.headers.origin);
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    res.header("Access-Control-Allow-Credentials", "true");
-    return res.sendStatus(204);
-  }
-  next();
-});
+// ✅ Handle preflight requests (OPTIONS)
+app.options("*", cors({
+  origin: allowedOrigins,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+}));
 
 app.use(express.json());
 app.use(cookieParser());
@@ -50,7 +48,7 @@ app.get("/", (req, res) => {
   res.send("hello guys welcome to leetlab🪄");
 });
 
-// ✅ Routes
+// Routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/problems", problemRoutes);
 app.use("/api/v1/execute-code", executionRoute);
