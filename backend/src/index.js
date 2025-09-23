@@ -16,28 +16,16 @@ const app = express();
 // Fallback to localhost for development if FRONTEND_URLS not set
 const allowedOrigins = (process.env.FRONTEND_URLS || "http://localhost:5173").split(",");
 
+// ✅ CORS setup
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like Postman or curl)
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error(`CORS error: Origin ${origin} not allowed`));
-      }
+      if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+      callback(new Error("Not allowed by CORS"));
     },
-    credentials: true, // Allow cookies to be sent
+    credentials: true,
   })
 );
-
-// ✅ Handle preflight requests (OPTIONS)
-app.options("*", cors({
-  origin: allowedOrigins,
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-}));
 
 app.use(express.json());
 app.use(cookieParser());
