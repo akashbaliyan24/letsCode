@@ -13,7 +13,7 @@ dotenv.config();
 const app = express();
 
 // ✅ Allow multiple frontend URLs
-const allowedOrigins = (process.env.FRONTEND_URLS || "http://localhost:5173").split(",");
+const allowedOrigins = (process.env.FRONTEND_URLS).split(",");
 
 // ✅ CORS setup
 app.use(
