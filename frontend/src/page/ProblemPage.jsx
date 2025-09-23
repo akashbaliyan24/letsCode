@@ -5,6 +5,7 @@ import Editor from "@monaco-editor/react"
 import { useState, useEffect } from 'react'
 import { getLanguageId } from "../lib/lang"
 import SubmissionResult from '../components/Submission'
+import SubmissionList from '../components/SubmissionList'
 import {
   Play,
   FileText,
@@ -32,7 +33,7 @@ const ProblemPage = () => {
   const { id } = useParams();
   const { getProblemById, problem, isProblemLoading } = useProblemStore();
 
-  const { isLoading: isSubmissionsLoading, getSubmissionForProblem, getSubmissionCountForProblem, submissionCount } = useSubmissionStore()
+  const {isLoading: isSubmissionsLoading, getSubmissionForProblem, getSubmissionCountForProblem, submissionCount } = useSubmissionStore()
   const [code, setCode] = useState("");
   const [activeTab, setActiveTab] = useState("description")
   const [selectedLanguage, setSelectedLanguage] = useState("javascript")
@@ -47,8 +48,9 @@ const ProblemPage = () => {
   useEffect(() => {
     getProblemById(id);
     getSubmissionCountForProblem(id),
-      getSubmissionForProblem(id);
+    getSubmissionForProblem(id);
   }, [id])
+
 
   useEffect(() => {
     if (problem) {
@@ -63,6 +65,14 @@ const ProblemPage = () => {
       )
     }
   }, [problem, selectedLanguage])
+
+  useEffect(()=> {
+    if(activeTab === "submission" && id){
+      getSubmissionForProblem(id);
+    }
+  }, [activeTab,id])
+
+  // console.log("submission",submissions)
 
   useEffect(() => {
     if (submissions.length > 0) {
@@ -160,10 +170,10 @@ const ProblemPage = () => {
             )}
           </div>
         );
-      // case "sunbmission":
-      //   return (
-
-      //   )
+      case "submission":
+        return (
+          <SubmissionList  submissions={submissions} isLoading={isSubmissionsLoading}/>
+        )
 
       case "discussion":
         return (
@@ -252,7 +262,7 @@ const ProblemPage = () => {
                   Description
                 </button>
                 <button className={`tab gap-2 ${activeTab === "submissions" ? "tab-active" : ""
-                  }`} onClick={() => setActiveTab("submissions")}>
+                  }`} onClick={() => setActiveTab("submission")}>
                   <Code2 className='w-4 h-4' />
                   Submissions
                 </button>

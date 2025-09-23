@@ -1,17 +1,25 @@
 import React from 'react'
 import { useMemo, useState } from 'react'
 import { useAuthStore } from "../store/useAuthStore"
-import { Link } from 'react-router-dom'
-import { Bookmark, PencilIcon, Trash, TrashIcon, Plus, User } from 'lucide-react'
-import { tr } from 'zod/v4/locales'
+import { data, Link } from 'react-router-dom'
+import { Bookmark, PencilIcon, Trash, TrashIcon, Plus, User, Loader2 } from 'lucide-react'
+import { useActions } from '../store/useActionStore'
+import CreatePlaylistModel from './CreatePlaylistModel'
+import AddToPlaylistModel from './AddToPlaylist'
+import { usePlaylistStore  } from '../store/usePlaylistStore'
+// import {useActionStore} from "../store/useActionStore"
 const ProblemTable = ({ problems }) => {
     const { authUser } = useAuthStore();
     const [search, setSearch] = useState("")
     const [difficulty, setDifficulty] = useState("ALL")
     const [selectedTag, setSelectedTag] = useState("ALL")
     const [currentPage, setCurrentPage] = useState(1);
+    const [isCeateModelOpen, setIsCreateModelOpen] = useState(false)
+    const [isAddToPlaylistModeOpen, setIsAddToPlaylistModelOpen] = useState(null);
     const [selectedProblemId, setSelectedProblemId] = useState(null)
 
+    const { isDeletingProblem, onDeleteProblem, isUpdatingProblem, onUpdateProblem } = useActions()
+    const { createPlaylist } = usePlaylistStore()
     // Extract all unique tags from problems
     const allTags = useMemo(() => {
         if (!Array.isArray(problems)) return [];
@@ -48,15 +56,31 @@ const ProblemTable = ({ problems }) => {
         );
     }, [filterdProblems, currentPage])
 
-    const handleDelete = (id) => { }
+    const handleDelete = (id) => {
+        onDeleteProblem(id)
+    }
 
-    const handleAddToPlaylist = (id) => { }
+    const handleUpdate = async (id, updatedData) => {
+        try {
+            const result = await onUpdateProblem(id, updatedData);
+
+        } catch (error) {
+            console.log("Update failed :", error)
+        }
+    }
+    const handleCreatePlaylist = async (data) => {
+        await createPlaylist(data)
+    }
+    const handleAddToPlaylist = (problemId) => {
+        setSelectedProblemId(problemId)
+        setIsAddToPlaylistModelOpen(true)
+    };
     return (
         <div className="w-full max-w-w-6xl mx-auto mt-10">
             {/* Header with Create playlist Button  */}
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold">Problems</h2>
-                <button className="btn btn-primary gap-2" ><Plus className='w-4 h-4' />
+                <button className="btn btn-primary gap-2" onClick={()=>setIsCreateModelOpen(true)}><Plus className='w-4 h-4' />
                     Create Playlist
                 </button>
             </div>
@@ -135,10 +159,16 @@ const ProblemTable = ({ problems }) => {
                                                 {authUser?.role === "ADMIN" && (
                                                     <div className="flex gap-2">
                                                         <button className="btn btn-sm btn-error" onClick={() => handleDelete(problem.id)}>
-                                                            <TrashIcon className='w-4 h-4 text-white' />
+                                                            {
+                                                                isDeletingProblem ? <Loader2 className='animate-spin h-4 w-4' /> : <TrashIcon className='w-4 h-4 text-white' />
+                                                            }
+
                                                         </button>
-                                                        <button disabled className='btn btn-sm btn-warning'>
-                                                            <PencilIcon className='w-4 h-4 text-white' />
+                                                        <button disabled className='btn btn-sm btn-warning' onClick={() => handleUpdate(problem.id, updatedData)}>
+                                                            {
+                                                                isUpdatingProblem ? <Loader2 className='animate-spin h-4 w-4' /> : <PencilIcon className='w-4 h-4 text-white' />
+                                                            }
+
                                                         </button>
                                                     </div>
                                                 )}
@@ -175,12 +205,24 @@ const ProblemTable = ({ problems }) => {
                     {currentPage} / {totalPages}
                 </span>
                 <button className="btn btn-sm"
-                disabled = {currentPage === totalPages}
-                onClick={()=> setCurrentPage((prev)=> prev+1)}
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage((prev) => prev + 1)}
                 >
                     Next
                 </button>
             </div>
+            {/* Models  */}
+
+            <CreatePlaylistModel 
+            isOpen={isCeateModelOpen}
+            onClose={()=> setIsCreateModelOpen(false)}
+            onSubmit={handleCreatePlaylist}
+            />
+            <AddToPlaylistModel 
+            isOpen={isAddToPlaylistModeOpen}
+            onClose={() => setIsAddToPlaylistModelOpen(false)}
+            problemId={selectedProblemId}
+            />
         </div>
     )
 }
