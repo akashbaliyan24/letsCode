@@ -35,7 +35,10 @@ export const getAllPlaylistDetails = async (req, res) => {
             },
             include: {
                 problems: {
-                    problem: true
+                    include: {
+                        problem: true
+                    }
+
                 }
             }
         })
@@ -55,7 +58,7 @@ export const getAllPlaylistDetails = async (req, res) => {
 export const getPlayListDetails = async (req, res) => {
     const { playlistId } = req.params
     try {
-        const playlist = await db.playlist.findUnique({
+        const playlist = await db.playlist.findFirst({
             where: {
                 id: playlistId,
                 userId: req.user.id,
@@ -93,11 +96,25 @@ export const addProblemToPlaylist = async (req, res) => {
             return res.status(400).json({ error: "Invalid or missing problemsId" })
         }
         // Create record for each prolem in the playlist
-        const problemsInPlaylist = await db.problemsInPlaylist.createMany({
-            data: problemIds.map((problemId) => {
-                playlistId,
-                    problemId
-            })
+        const problemsInPlaylist = await db.problemInPlaylist.createMany({
+            data: problemIds.map((problemId) => ({
+                playListId: playlistId,
+                problemId,
+            })),
+            skipDuplicates: true,
+        });
+
+        // fetch updated playlist with problem
+
+        const updatedPlaylist = await db.playlist.findUnique({
+            where: { id: playlistId },
+            include: {
+                problems: {
+                    include: {
+                        problem: true
+                    },
+                }
+            }
         })
         res.status(201).json({
             success: true,
@@ -123,7 +140,7 @@ export const removeProblemFromPlaylist = async (req, res) => {
 
         const deletedProblem = await db.problemsInPlaylist.deleteMany({
             where: {
-                playlistId,
+                playListId:playlistId,
                 problemId: {
                     in: problemIds
                 }

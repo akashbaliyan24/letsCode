@@ -113,7 +113,8 @@ export const getProblemById = async (req, res) => {
 }
 
 export const updateProblem = async (req, res) => {
-    const { id, title, description, difficulty, tags, examples, constraints, testcases, codeSnippets, referenceSolutions } = req.body;
+    const {title, description, difficulty, tags, examples, constraints, testcases, codeSnippets, referenceSolutions } = req.body;
+    const {id} = req.params;
     try {
         for (const [language, solutionCode] of Object.entries(referenceSolutions)) {
             const languageId = getJudge0LanguageId(language);
