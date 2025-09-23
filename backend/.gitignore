@@ -4,8 +4,8 @@ node_modules/.prisma
 node_modules/@prisma 
 
 # Environment variables
-.env
-
+.env.dvelopment
+.env.production
 # Prisma generated client/engines
 /src/generated/prisma
 
