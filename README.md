@@ -46,8 +46,8 @@ letsCode/
 2. Backend setup 
   cd backend
   npm install
-   create .env with required keys (e.g., PRISMA_URI, JWT_SECRET, PORT)
-  npm run dev
+create .env with required keys (e.g., PRISMA_URI, JWT_SECRET, PORT)
+   npm run dev
 
 3. Frontend setup
    cd frontend
