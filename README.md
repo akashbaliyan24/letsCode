@@ -43,13 +43,16 @@ letsCode/
    ```bash
    git clone https://github.com/akashbaliyan24/letsCode.git
    cd letsCode
-2. Backend setup 
+2. Backend setup
+```bash
   cd backend
-  npm install
-create .env with required keys (e.g., PRISMA_URI, JWT_SECRET, PORT)
-   npm run dev
+npm install
+ create .env with required keys (e.g., MONGO_URI, JWT_SECRET, PORT)
+npm run dev
 
-3. Frontend setup
+
+4. Frontend setup
+```bash
  cd frontend
 npm install
 npm run dev
