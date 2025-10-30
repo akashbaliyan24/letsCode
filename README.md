@@ -50,9 +50,9 @@ create .env with required keys (e.g., PRISMA_URI, JWT_SECRET, PORT)
    npm run dev
 
 3. Frontend setup
-   cd frontend
-  npm install
-  npm run dev
+ cd frontend
+npm install
+npm run dev
 then open http://localhost:5173 (or specified port)
 
 📚 Usage
