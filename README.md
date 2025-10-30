@@ -44,20 +44,17 @@ letsCode/
    git clone https://github.com/akashbaliyan24/letsCode.git
    cd letsCode
 2. Backend setup
-```bash
-  cd backend
-npm install
- create .env with required keys (e.g., MONGO_URI, JWT_SECRET, PORT)
-npm run dev
-
-
-4. Frontend setup
-```bash
- cd frontend
-npm install
-npm run dev
-then open http://localhost:5173 (or specified port)
-
+   ```bash
+     cd backend
+   npm install
+    create .env with required keys (e.g., MONGO_URI, JWT_SECRET, PORT)
+   npm run dev
+3. Frontend setup
+      ```bash
+       cd frontend
+      npm install
+      npm run dev
+      then open http://localhost:5173 (or specified port)
 📚 Usage
 
 Navigate through the UI to access lessons/challenges
