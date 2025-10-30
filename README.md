@@ -4,7 +4,7 @@
 
 ## 🚀 Project Structure
 letsCode/
-├── backend/ # (If applicable) Node.js / Express / API code
+├── backend/ #  Node.js / Express / API code
 ├── frontend/ # React / Vite / UI components
 
 ## 🔍 Features
